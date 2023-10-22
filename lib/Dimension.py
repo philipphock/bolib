@@ -8,17 +8,17 @@ class Float01(float):
             raise ValueError("Value must be between 0 and 1")
 
 class Dimension:
-    def __init__(self) -> None:
+    def __init__(self, value) -> None:
+        self._value = value
+
+    @property
+    @abstractmethod
+    def normalized(self) -> Float01:
         pass
 
     @property
     @abstractmethod
-    def for_optimizer(self) -> Float01:
-        pass
-
-    @property
-    @abstractmethod
-    def for_user(self) -> float:
+    def value(self) -> float:
         pass
 
 
