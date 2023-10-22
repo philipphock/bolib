@@ -13,7 +13,7 @@ import torch.nn.functional as F
 from botorch.acquisition import ExpectedImprovement
 
 from Computable import Computable
-from lib.Normalizer import Normalizer, OptimizeFor
+from Normalizer import Normalizer
 
 
 class Bo:
@@ -21,18 +21,64 @@ class Bo:
         self._x_dim = x_dim
         self._y_dim = y_dim
         
-        self._raw_x:  List[Computable]
-        self._raw_y:  List[Computable]
+        self._raw_x:  List[Computable] = []
+        self._raw_y:  List[Computable] = []
+        
+        self._x_norm = x_norm
+        self._y_norm = y_norm
     
 
-    def add_data(self, x: Computable):
-        pass
+    def add_floats(self, xs: List[List[float]] | None, ys: List[List[float]]| None):
+        if xs == None: xs = []
+        if ys == None: ys = []
 
-    def set_data(self, x: Computable):
-        self._raw = x
+        tmpx = []
+        tmpy = []
+
+        for x in xs:
+            tmpx.append(Computable(x, self._x_norm))
+        
+        for y in ys:
+            tmpy.append(Computable(y, self._y_norm))
+
+
+        self._add_data(tmpx, tmpy)
+
+
+    
+    def _clear(self):
+        self._raw_x = []
+        self._raw_y = []
+
+    def set_floats(self, xs: List[List[float]], ys: List[List[float]]):
+        # TODO this can be more efficient using _set_data instead
+        self._clear()
+        self.add_floats(xs, ys)
+
+    def _add_data(self, xs: List[Computable], ys: List[Computable]):
+        self._raw_x += xs
+        self._raw_y += ys
+
+    def _set_data(self, x: List[Computable], y: List[Computable]):
+        self._raw_x = x
+        self._raw_y = y
 
     def inspect_data(self):
-        print(self._raw)
+        xo = map(lambda o: o.original, self._raw_x)
+        yo = map(lambda o: o.original, self._raw_y)
+
+        xc = map(lambda o: o.get_raw_tensor_values(), self._raw_x)
+        yc = map(lambda o: o.get_raw_tensor_values(), self._raw_y)
+
+        po = zip(xo, yo)
+        pc = zip(xc, yc)
+        
+        print("original: ")
+        print(list(po))
+        print("")
+        print("-------")
+        print("computable: ")
+        print(list(pc))
 
     def infer(self):
         train_Y = standardize(Y)
@@ -58,4 +104,12 @@ class Bo:
 if __name__ == "__main__":
     x_norm = Normalizer(0, 100)
     y_norm = Normalizer(0, 10)
-    bo = Bo(2, 1, )
+    bo = Bo(x_dim=2, y_dim=1, x_norm=x_norm, y_norm=y_norm)
+
+    bo.add_floats([[10, 1], [30, 2], [70, 1]], 
+                  [[6],     [8],     [2]])
+    
+    bo.add_floats([[100, 0]], 
+                  [[0]])
+    
+    bo.inspect_data()

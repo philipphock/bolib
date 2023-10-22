@@ -1,21 +1,26 @@
 from typing import List
 import torch
-import itertools
 from Normalizer import Normalizer
 
 class Computable:
 
     
-    def __init__(self, original_values: List[float], normalizer: Normalizer) -> None:
-        self._original = original_values
+    def __init__(self, original_values: List[float], normalizer: Normalizer = Normalizer.Identity()) -> None:
+        self._original = original_values        
         transformed = normalizer.to_normalized_space(original_values)
         self._computable = torch.tensor([transformed], dtype=torch.double)
 
  
+    def __repr__(self) -> str:
+        #return f"{self._computable} ({self._original})"
+        return f"{self._original}"
         
     @property
     def values(self):
         return self._computable
+
+    def get_raw_tensor_values(self):
+        return self._computable.detach().cpu().numpy().tolist()
 
     @property
     def original(self):

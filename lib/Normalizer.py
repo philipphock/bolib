@@ -7,6 +7,14 @@ class OptimizeFor(Enum):
     MAX = 1
 
 class Normalizer:
+
+    _identity = None
+    
+    @classmethod
+    def Identity(cls):
+        if cls._identity is None:
+            cls._identity = cls(0, 0) 
+        return cls._identity
     
     def __init__(self, min: float, max: float, optimize_for: OptimizeFor = OptimizeFor.MAX) -> None:
         self._min = min
@@ -30,6 +38,7 @@ class Normalizer:
         
     
     def _denormalize(self, normalized_value: float, min_val: List[float], max_val: List[float]):
+
         self._check_if_normalized(normalized_value)
         ret = []        
         for v in normalized_value:
@@ -42,9 +51,15 @@ class Normalizer:
         return o
     
     def to_normalized_space(self, values: List[float]):
+        if self._min == self._max == 0:
+            return values
+        
         return self._normalize(values, self._min, self._max)
     
     def to_original_space(self, values: List[float]):
+        if self._min == self._max == 0:
+            return values
+        
         self._check_if_normalized(values)
         return self._denormalize(values, self._min, self._max)
 
