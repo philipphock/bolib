@@ -1,5 +1,4 @@
 from typing import List
-import torch
 from Normalizer import Normalizer
 
 class Computable:
@@ -7,8 +6,7 @@ class Computable:
     
     def __init__(self, original_values: List[float], normalizer: Normalizer = Normalizer.Identity()) -> None:
         self._original = original_values        
-        transformed = normalizer.to_normalized_space(original_values)
-        self._computable = torch.tensor([transformed], dtype=torch.double)
+        self._computable = normalizer.to_normalized_space(original_values)
 
  
     def __repr__(self) -> str:
@@ -19,8 +17,8 @@ class Computable:
     def values(self):
         return self._computable
 
-    def get_raw_tensor_values(self):
-        return self._computable.detach().cpu().numpy().tolist()
+    #def get_raw_tensor_values(self):
+    #    return self._computable.detach().cpu().numpy().tolist()
 
     @property
     def original(self):
