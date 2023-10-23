@@ -1,21 +1,38 @@
+from abc import abstractmethod
 from enum import Enum
 
+from Float01 import Float01
 
-from Dimension import Float01
+
+
+
+
+class Normalizer:
+    
+    @abstractmethod
+    def normalize(value: any) -> Float01:
+        pass
+
+    @abstractmethod
+    def denormalize(value: Float01) -> any:
+        pass
+
+class IdentityNormalizer(Normalizer):
+    
+    def normalize(value: any) -> Float01:
+        return value
+    
+    def denormalize(value: Float01) -> any:
+        return value
+
 
 class OptimizeFor(Enum):
     MIN = -1
     MAX = 1
 
-class NumericNormalizer:
+class NumericNormalizer(Normalizer):
 
     _identity = None
-    
-    @classmethod
-    def Identity(cls):
-        if cls._identity is None:
-            cls._identity = cls(0, 0) 
-        return cls._identity
     
     def __init__(self, min: float, max: float, optimize_for: OptimizeFor = OptimizeFor.MAX) -> None:
         self._min = min
