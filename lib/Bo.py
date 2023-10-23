@@ -12,21 +12,15 @@ from botorch.optim import optimize_acqf
 import torch.nn.functional as F
 from botorch.acquisition import ExpectedImprovement
 
-from Computable import Computable
-from Normalizer import Normalizer
+from Dimension import NumericDimension
+from ComputeSpace import ComputeSpace
 
 # todo add dimension checks
 
 class Bo:
-    def __init__(self, x_dim: int, y_dim: int, x_norm: Normalizer,  y_norm: Normalizer) -> None:
-        self._x_dim = x_dim
-        self._y_dim = y_dim
-        
-        self._raw_x:  List[Computable] = []
-        self._raw_y:  List[Computable] = []
-        
-        self._x_norm = x_norm
-        self._y_norm = y_norm
+    def __init__(self) -> None:
+        pass
+
     
 
     def add_floats(self, xs: List[List[float]] | None, ys: List[List[float]]| None):
@@ -118,14 +112,19 @@ class Bo:
         return c
 
 if __name__ == "__main__":
-    x_norm = Normalizer(0, 100)
-    y_norm = Normalizer(0, 10)
-    bo = Bo(x_dim=2, y_dim=1, x_norm=x_norm, y_norm=y_norm)
+    bo = Bo()
 
-    bo.add_floats([[10, 1], [30, 2], [70, 1]], 
-                  [[6],     [8],     [2]])
+    x0 = NumericDimension(min=0, max=100, name="p0")
+    x1 = NumericDimension(min=0, max=3, name="p1")
+    ranking_y = NumericDimension(min=0, max=10, name="Ranking")
+
+    compSpace = ComputeSpace(x=[x0, x1], y=[ranking_y])
+
+    compSpace.add_data(xs = [[10, 1], [30, 2], [70, 1]],
+                       ys = [[6],     [8],     [2]])
+
     
-    bo.add_floats([[100, 0]], 
+    compSpace.add_data([[100, 0]], 
                   [[0]])
     
     # bo.inspect_data()

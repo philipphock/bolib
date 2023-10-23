@@ -1,9 +1,18 @@
 from Normalizer import NumericNormalizer, OptimizeFor
 from Parameter import Parameter
+from abc import abstractmethod
 
-class NumericDimension():
+class Dimension:
+    
+    @abstractmethod
+    def new(self, value) -> Parameter:
+        pass
+
+
+class NumericDimension(Dimension):
     
     def __init__(self, name: str = "Numeric", min: float = 0.0, max: float = 1.0, optimize_for = OptimizeFor.MAX) -> None:
+        super().__init_()
         self._name = name
         self._normalizer = NumericNormalizer(min, max, optimize_for=optimize_for)
         

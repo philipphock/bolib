@@ -34,7 +34,9 @@ class NumericNormalizer(Normalizer):
 
     _identity = None
     
+    
     def __init__(self, min: float, max: float, optimize_for: OptimizeFor = OptimizeFor.MAX) -> None:
+        super().__init_()
         self._min = min
         self._max = max
         self._opt = optimize_for
