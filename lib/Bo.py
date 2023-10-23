@@ -120,7 +120,7 @@ if __name__ == "__main__":
 
     compSpace = ComputeSpace(x=[x0, x1], y=[ranking_y])
 
-    compSpace.add_data(xs = [[10, 1], [30, 2], [70, 1]],
+    compSpace.add_floats(xs = [[10, 1], [30, 2], [70, 1]],
                        ys = [[6],     [8],     [2]])
 
     

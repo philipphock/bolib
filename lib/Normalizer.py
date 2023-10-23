@@ -4,7 +4,9 @@ from enum import Enum
 from Float01 import Float01
 
 
-
+class OptimizeFor(Enum):
+    MIN = -1
+    MAX = 1
 
 
 class Normalizer:
@@ -18,17 +20,24 @@ class Normalizer:
         pass
 
 class IdentityNormalizer(Normalizer):
-    
-    def normalize(value: any) -> Float01:
+    def __init__(self, optimize_for = OptimizeFor.MAX) -> None:
+        self._min = 0
+        self._max = 1
+        self._opt = optimize_for
+        
+    def normalize(self, value: any) -> Float01:
+        if self._opt == OptimizeFor.MIN:
+            return 1-value
         return value
     
-    def denormalize(value: Float01) -> any:
+    def denormalize(self, value: Float01) -> any:
+        if self._opt == OptimizeFor.MIN:
+            return 1 - value
+        
         return value
 
 
-class OptimizeFor(Enum):
-    MIN = -1
-    MAX = 1
+
 
 class NumericNormalizer(Normalizer):
 
@@ -36,7 +45,6 @@ class NumericNormalizer(Normalizer):
     
     
     def __init__(self, min: float, max: float, optimize_for: OptimizeFor = OptimizeFor.MAX) -> None:
-        super().__init_()
         self._min = min
         self._max = max
         self._opt = optimize_for
@@ -77,3 +85,10 @@ if __name__ == "__main__":
     bt = NumericNormalizer(-100, 100, OptimizeFor.MIN)
     print(bt.normalize(-100))
     print(bt.denormalize(1))
+
+    idn = IdentityNormalizer()
+    print(idn.normalize(0))
+    print(idn.normalize(1))
+
+    print(idn.denormalize(0))
+    print(idn.denormalize(1))
