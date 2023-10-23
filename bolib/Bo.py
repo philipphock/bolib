@@ -26,8 +26,8 @@ class Bo:
     def infer(self):
         xn, yn = self._cp.normalized
         
-        xt = torch.tensor(xn)
-        yt = torch.tensor(yn)
+        xt = torch.tensor(xn, dtype=torch.double)
+        yt = torch.tensor(yn, dtype=torch.double)
 
         Y =  F.normalize(yt, dim=None, p=2)
         train_Y = standardize(Y)
