@@ -5,19 +5,21 @@ import pandas as pd
 
 
 class Parameter:
-    def __init__(self, value, normalizer: Normalizer, name: str) -> None:
+    def __init__(self, value, name: str, normalizer: Normalizer = IdentityNormalizer()) -> None:
         self._value = value
         self._normalizer = normalizer
         self._normalized = normalizer.normalize(self._value)
         self._name = name
-
+    
     def __repr__(self) -> str:     
-        return self.to_dataframe().to_string()
+        df = self.to_dataframe().to_string()
+        return df
 
     def to_dataframe(self):
         data = [[self._name, self._value, self._normalizer._min, self._normalizer._max, self._normalized]]
         columns = ['name', 'value', 'min', 'max', 'normalized']
         df = pd.DataFrame(data, columns=columns)
+
         return df
         
         
@@ -32,23 +34,30 @@ class Parameter:
 
 
 class ParamList(list):
-    def __init__(self, data: List[Parameter]):
+    def __init__(self, data: List[Parameter] = [], printheader=True):
         super().__init__(data)
+        self._printheader = printheader
     
     def to_dataframe(self):
-        return pd.concat([x.to_dataframe() for x in self], axis=0)
-        
-        
+        return pd.concat([x.to_dataframe() for x in self], axis=0).reset_index(drop=True)
+    
+    @property
+    def normalized(self):
+        return [i.normalized for i in self]
+    
+    def __repr__(self) -> str:
+        return self.to_dataframe().to_string(header=self._printheader)
         
 
 
 if __name__ == "__main__":
-    p0 = Parameter(0, IdentityNormalizer(), "p0")
-    p1 = Parameter(1, IdentityNormalizer(), "p1")
-
+    p0 = Parameter(0, "p0")
+    p1 = Parameter(1, "p1")    
     l = ParamList([p0, p1])
-    ldf = l.to_dataframe()
-    print(ldf)
+
+    print(l)
+    print(l.normalized)
+
     
 
     

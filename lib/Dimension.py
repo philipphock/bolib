@@ -17,7 +17,7 @@ class NumericDimension(Dimension):
         self._normalizer = NumericNormalizer(min, max, optimize_for=optimize_for)
         
     def new(self, value: float) -> Parameter:
-        return Parameter(value, self._normalizer, self._name)        
+        return Parameter(value, self._name, self._normalizer)        
 
 if __name__ == "__main__":
     ranking = NumericDimension(min=0, max=10, name="Ranking", optimize_for=OptimizeFor.MIN)
