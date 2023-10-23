@@ -16,8 +16,8 @@ class Parameter:
         return df
 
     def to_dataframe(self):
-        data = [[self._name, self._value, self._normalizer._min, self._normalizer._max, self._normalized]]
-        columns = ['name', 'value', 'min', 'max', 'normalized']
+        data = [[self._name, self._value, self._normalizer._space, self._normalized]]
+        columns = ['name', 'value', 'space', 'normalized']
         df = pd.DataFrame(data, columns=columns)
 
         return df

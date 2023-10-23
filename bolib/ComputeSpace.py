@@ -26,13 +26,18 @@ class ComputeSpace:
         self.xdim = len(x)
         self.ydim = len(y)
 
-        
-    def add_floats(self, xs: List[List[float]], ys: List[List[float]]):
+
+
+
+    def add_values(self, xs: List[List], ys: List[List], axis = "xy"):
         if len(xs) != len(ys):
             raise AttributeError(f"length of xs and ys must be equal. len(xs) = {len(xs)}, len(ys)={len(ys)}.")
         
-        self._newdim(xs, self._x_data, self._x)
-        self._newdim(ys, self._y_data, self._y)
+        if "x" in axis:
+            self._newdim(xs, self._x_data, self._x)
+        
+        if "y" in axis:
+            self._newdim(ys, self._y_data, self._y)
     
     def __repr__(self) -> str:         
         return f"dim: [{self.xdim, self.ydim}]\nx:\n{self.x}\n\n-----\n\ny:\n{self.y}"
@@ -56,10 +61,12 @@ class ComputeSpace:
     def y(self):
         return self._y_data
 
-    def _newdim(self, l: List[List[float]], p: List[ParamList], dim: List[Dimension]):
+
+
+    def _newdim(self, l: List[List], p: List[ParamList], dim: List[Dimension]):
         for elem in l: 
             plist = ParamList()                             # xs = [[10, 1], [30, 2], [70, 1]]; elem =  [10, 1]
-            for index_attr, attr in enumerate(dim):         # _x = [x0, x1]; xattr = x0
+            for index_attr, attr in enumerate(dim):         # _x = [x0, x1]; xattr = x0                
                 elem_i = elem[index_attr]                   # elem_i = 10
                 newdim = attr.new(elem_i)
                 plist.append(newdim)
@@ -77,7 +84,7 @@ if __name__ == "__main__":
 
     compSpace = ComputeSpace([x0, x1], [ranking_y])
 
-    compSpace.add_floats(xs = [[100, 2], [10, 1]], ys=[[10],[0]])
+    compSpace.add_values(xs = [[100, 2], [10, 1]], ys=[[10],[0]])
     print(compSpace)
     print(compSpace.normalized)
     

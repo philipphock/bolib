@@ -1,5 +1,6 @@
 from abc import abstractmethod
 from enum import Enum
+from typing import List
 
 from bolib.Float01 import Float01
 
@@ -10,7 +11,9 @@ class OptimizeFor(Enum):
 
 
 class Normalizer:
-    
+    def __init__(self, space) -> None:
+        self._space = space
+
     @abstractmethod
     def normalize(value: any) -> Float01:
         pass
@@ -21,8 +24,8 @@ class Normalizer:
 
 class IdentityNormalizer(Normalizer):
     def __init__(self, optimize_for = OptimizeFor.MAX) -> None:
-        self._min = 0
-        self._max = 1
+        super().__init__((0, 1))
+        
         self._opt = optimize_for
         
     def normalize(self, value: any) -> Float01:
@@ -40,11 +43,11 @@ class IdentityNormalizer(Normalizer):
 
 
 class NumericNormalizer(Normalizer):
-
-    _identity = None
     
     
     def __init__(self, min: float, max: float, optimize_for: OptimizeFor = OptimizeFor.MAX) -> None:
+        super().__init__((min, max))
+
         self._min = min
         self._max = max
         self._opt = optimize_for
@@ -78,10 +81,37 @@ class NumericNormalizer(Normalizer):
         return o
         
         
+class DiscreteNormalizer(Normalizer):
+    
+    def __init__(self, elems: List) -> None:
+        super().__init__(elems)
+        self._elems = elems
+        
 
+    def normalize(self, value) -> Float01:
+        
+        v = self._space.index(value) / len(self._elems)
+        return Float01(v)
+
+        
+    
+    def denormalize(self, normalized_value: Float01):
+        v = round(normalized_value * len(self._elems))
+        if v < 0:
+            return self._elems[0]
+        
+        if v < len(self._elems):
+            return self._elems[v]
+        
+        return self._elems[-1]
+        
+        
+        
+        
 
 
 if __name__ == "__main__":
+    """
     bt = NumericNormalizer(-100, 100, OptimizeFor.MIN)
     print(bt.normalize(-100))
     print(bt.denormalize(1))
@@ -92,3 +122,9 @@ if __name__ == "__main__":
 
     print(idn.denormalize(0))
     print(idn.denormalize(1))
+    """
+
+    dn = DiscreteNormalizer(['Pizza', 'Burger', 'Tacos'])
+    n = dn.normalize('Burger')
+    nn = dn.denormalize(0.1)
+    print(nn)

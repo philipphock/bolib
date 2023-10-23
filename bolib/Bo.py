@@ -39,9 +39,7 @@ class Bo:
         
         # Define the Expected Improvement (EI) acquisition function
         ei = ExpectedImprovement(gp, best_f=torch.max(Y))
-
-        # 'best_observed_value' is the best observed value from your optimization process so far
-        bounds = torch.stack([torch.zeros(2), torch.ones(2)])
+        
 
         # Optimize the EI acquisition function to find the next candidate point
         candidate, acq_value = optimize_acqf(
