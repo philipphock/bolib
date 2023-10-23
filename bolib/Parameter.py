@@ -1,6 +1,6 @@
 from typing import List
-from Normalizer import IdentityNormalizer, Normalizer
-from Float01 import Float01
+from bolib.Normalizer import IdentityNormalizer, Normalizer
+from bolib.Float01 import Float01
 import pandas as pd
 
 

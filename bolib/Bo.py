@@ -12,8 +12,8 @@ from botorch.optim import optimize_acqf
 import torch.nn.functional as F
 from botorch.acquisition import ExpectedImprovement
 
-from Dimension import NumericDimension
-from ComputeSpace import ComputeSpace
+from bolib.Dimension import NumericDimension
+from bolib.ComputeSpace import ComputeSpace
 
 # todo add dimension checks
 
@@ -65,8 +65,9 @@ if __name__ == "__main__":
     bo = Bo(compSpace)
     inf = bo.infer()
     denorm = compSpace.denormalize(inf)
+
     print("inf: ", inf)
     print("")
-    print("denorm: ", denorm)
+    print("denorm:\n ", denorm)
     
     

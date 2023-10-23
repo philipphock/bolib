@@ -1,7 +1,7 @@
 from typing import List
 
-from Dimension import Dimension, NumericDimension
-from Parameter import ParamList
+from bolib.Dimension import Dimension, NumericDimension
+from bolib.Parameter import ParamList
 
 class ComputeList(list):
     def __init__(self, data: List[ParamList] = []):
@@ -38,9 +38,9 @@ class ComputeSpace:
         return f"dim: [{self.xdim, self.ydim}]\nx:\n{self.x}\n\n-----\n\ny:\n{self.y}"
             
     def denormalize(self, value):
-        ret = []
+        ret = ComputeList()
         for i in range(self.xdim):
-            ret.append(self._x[i].new(value[i]))
+            ret.append(self._x[i].denorm(value[i]))
         return ret
 
     @property 

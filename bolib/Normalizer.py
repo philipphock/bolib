@@ -1,7 +1,7 @@
 from abc import abstractmethod
 from enum import Enum
 
-from Float01 import Float01
+from bolib.Float01 import Float01
 
 
 class OptimizeFor(Enum):
