@@ -21,16 +21,14 @@ class Bo:
         self._cp = compSpace
 
     
-    def probAQF(self, y, model):
-        best_f = torch.max(y)
+    def probAQF(self, best_f, model):
         sampler = SobolQMCNormalSampler(1024)
         qEI = qExpectedImprovement(model, best_f, sampler)        
         #qei = qEI(x)
         #print("QEI", qei)
         return qEI
     
-    def detAQF(self, y,  model):
-        best_f = torch.max(y)
+    def detAQF(self, best_f,  model):
         ei = ExpectedImprovement(model, best_f=best_f)        
         return ei
     
@@ -51,8 +49,10 @@ class Bo:
         
         
         #af = self.detAQF(train_Y, gp)
-        
-        af = self.probAQF(train_Y, gp)
+        #best_f = torch.max(yt)
+        best_f = torch.max(train_Y)
+
+        af = self.probAQF(best_f, gp)
         
 
         candidate, acq_value = optimize_acqf(

@@ -32,6 +32,20 @@ class ComputeSpace:
     def add_values(self, xs: List[List], ys: List[List], axis = "xy"):
         if len(xs) != len(ys):
             raise AttributeError(f"length of xs and ys must be equal. len(xs) = {len(xs)}, len(ys)={len(ys)}.")
+        if len(xs) == 0:
+            raise AttributeError(f"zero lenght parameter are not allowed")
+        
+        if isinstance(xs, list):
+            if not isinstance(xs[0], list):
+                raise AttributeError(f"ys must be of type List[List], your ys is of type List[{type(ys[0])}].")
+        else:
+            raise AttributeError(f"ys must be of type List[List], your ys is of type {type(ys)}.")
+        
+        if isinstance(ys, list):
+            if not isinstance(ys[0], list):
+                raise AttributeError(f"ys must be of type List[List], your xs is of type List[{type(ys[0])}].")
+        else:
+            raise AttributeError(f"ys must be of type List[List], your xs is of type {type(ys)}.")
         
         if "x" in axis:
             self._newdim(xs, self._x_data, self._x)
@@ -65,9 +79,12 @@ class ComputeSpace:
 
     def _newdim(self, l: List[List], p: List[ParamList], dim: List[Dimension]):
         for elem in l: 
+            #print("elem", elem)
             plist = ParamList()                             # xs = [[10, 1], [30, 2], [70, 1]]; elem =  [10, 1]
             for index_attr, attr in enumerate(dim):         # _x = [x0, x1]; xattr = x0                
+                #print("attr", attr)
                 elem_i = elem[index_attr]                   # elem_i = 10
+                #print("elemI", elem_i)
                 newdim = attr.new(elem_i)
                 plist.append(newdim)
             p.append(plist)
