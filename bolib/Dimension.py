@@ -40,6 +40,7 @@ class DiscreteDimension(Dimension):
         return Parameter(v, self._name, self._normalizer) 
         
 if __name__ == "__main__":
+    """
     ranking = NumericDimension(min=0, max=10, name="Ranking", optimize_for=OptimizeFor.MIN)
     rank0 = ranking.new(0)
     rank1 = ranking.new(5)
@@ -47,6 +48,12 @@ if __name__ == "__main__":
 
     ranking.denorm(1)
     print(rank1)
+
+    
     #print(rank0)
     #print(rank1)
     #print(rank2)
+    """
+
+    ddim = DiscreteDimension([0, 1,2,3,4,5])
+    ddim.new(6)

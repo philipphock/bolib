@@ -37,15 +37,15 @@ class ComputeSpace:
         
         if isinstance(xs, list):
             if not isinstance(xs[0], list):
-                raise AttributeError(f"ys must be of type List[List], your ys is of type List[{type(ys[0])}].")
+                raise AttributeError(f"xs must be of type List[List], your xs is of type List[{type(ys[0])}].")
         else:
-            raise AttributeError(f"ys must be of type List[List], your ys is of type {type(ys)}.")
+            raise AttributeError(f"xs must be of type List[List], your xs is of type {type(ys)}.")
         
         if isinstance(ys, list):
             if not isinstance(ys[0], list):
-                raise AttributeError(f"ys must be of type List[List], your xs is of type List[{type(ys[0])}].")
+                raise AttributeError(f"ys must be of type List[List], your ys is of type List[{type(ys[0])}].")
         else:
-            raise AttributeError(f"ys must be of type List[List], your xs is of type {type(ys)}.")
+            raise AttributeError(f"ys must be of type List[List], your ys is of type {type(ys)}.")
         
         if "x" in axis:
             self._newdim(xs, self._x_data, self._x)
