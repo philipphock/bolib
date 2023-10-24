@@ -14,13 +14,25 @@ from botorch.acquisition import ExpectedImprovement
 
 from bolib.Dimension import NumericDimension
 from bolib.ComputeSpace import ComputeSpace
-
-# todo add dimension checks
-
+from botorch.sampling.normal import SobolQMCNormalSampler
+from botorch.acquisition.monte_carlo import qExpectedImprovement
 class Bo:
     def __init__(self, compSpace: ComputeSpace) -> None:
         self._cp = compSpace
 
+    
+    def probAQF(self, y, model):
+        best_f = torch.max(y)
+        sampler = SobolQMCNormalSampler(1024)
+        qEI = qExpectedImprovement(model, best_f, sampler)        
+        #qei = qEI(x)
+        #print("QEI", qei)
+        return qEI
+    
+    def detAQF(self, y,  model):
+        best_f = torch.max(y)
+        ei = ExpectedImprovement(model, best_f=best_f)        
+        return ei
     
 
     def infer(self):
@@ -37,17 +49,19 @@ class Bo:
         fit_gpytorch_mll(mll)
         bounds = torch.stack([torch.zeros(self._cp.xdim), torch.ones(self._cp.xdim)])
         
-        # Define the Expected Improvement (EI) acquisition function
-        ei = ExpectedImprovement(gp, best_f=torch.max(Y))
+        
+        #af = self.detAQF(train_Y, gp)
+        
+        af = self.probAQF(train_Y, gp)
         
 
-        # Optimize the EI acquisition function to find the next candidate point
         candidate, acq_value = optimize_acqf(
-            ei, bounds=bounds, q=1, num_restarts=20, raw_samples=150,
+            af, bounds=bounds, q=1, num_restarts=20, raw_samples=30,
         )
         c = candidate[0].detach().cpu().numpy().tolist()
-        
         return c
+        
+        
 
 if __name__ == "__main__":
 
