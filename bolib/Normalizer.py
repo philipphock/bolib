@@ -22,6 +22,7 @@ class Normalizer:
     def denormalize(value: Float01) -> any:
         pass
 
+    
 class IdentityNormalizer(Normalizer):
     def __init__(self, optimize_for = OptimizeFor.MAX) -> None:
         super().__init__((0, 1))
@@ -39,7 +40,7 @@ class IdentityNormalizer(Normalizer):
         
         return value
 
-
+    
 
 
 class NumericNormalizer(Normalizer):

@@ -33,7 +33,7 @@ class Bo:
         return ei
     
 
-    def infer(self):
+    def infer(self) -> List[float]:
         xn, yn = self._cp.normalized
         
         xt = torch.tensor(xn, dtype=torch.double)

@@ -10,8 +10,10 @@ class Dimension:
     def new(self, value) -> Parameter:
         pass
     
+    @abstractmethod
     def denorm(self, v) -> Parameter:
         pass 
+
 
 class NumericDimension(Dimension):
     
@@ -25,6 +27,7 @@ class NumericDimension(Dimension):
     def denorm(self, v: float) -> Parameter:
         v = self._normalizer.denormalize(v)
         return Parameter(v, self._name, self._normalizer) 
+    
 
 class DiscreteDimension(Dimension):
     def __init__(self, elements: List, name: str = "Distinct") -> None:
