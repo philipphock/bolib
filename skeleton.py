@@ -1,26 +1,38 @@
 import torch
 import random
-from fun import optimize
+
+from bolib.Dimension import DiscreteDimension, NumericDimension
+
+
+
+gender  = DiscreteDimension(elements=["male", "female", "diverse"] ,name = "gender")
+age     = NumericDimension(min=18, max=99, name="age")
+height  = NumericDimension(min=100, max=200, name="height")
+
+
+#[ DiscreteDimension(elements=[i*10+j for j in range(10)]  ,name=f"p{i}") for i in range(blackbox_dims) ]
+
+ranking = [ NumericDimension(min=0, max=10, name="Rating") ]
+
+
 def main():
-    print("Welcome to the Number Guessing Game with Botorch!")
-    print("The idea is that the computer must find the 2 values (Age, Gender) according to your feedback")
-    print("Age is 35, Gender is 2")
-    input("Press Enter when you're ready...")
+    print("Welcome to the character guessing game.")
+    print("The idea is that the computer tells you a descroption of yourself and you have to indicate how accurate the description is.")
     
+    dimensons = 
 
-    tries = 0
-    est_age = random.randint(1, 100)
-    est_gender = random.randint(1, 3)
-    v_X = torch.tensor([],dtype=torch.double)
-    v_Y = torch.tensor([], dtype=torch.double)
+    
+    print(f"The computer will give you a list of {blackbox_dims} numbers.")
+    print(f"You tell the computer how good the guess is.")
+    print("")
+    print(f"Please make a single rating on a scale from 1 to 10")
+    input("enter to proceed")
+    print("Great! Now let's start")
 
-    while True:              
-        print("\n----------------------")
-        print(f"Age     =  {est_age}.")
-        print(f"Gender  =  {est_gender}.")
-                
-        feedback = int(input("Please give a Rating between 1 and 10 where 1 is far away and 10 is very close: "))        
-
+    while True:                          
+        
+        feedback = int(input("Please tell me how many numbers I guessed correclty"))        
+        
 
         
 
