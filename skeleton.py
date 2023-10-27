@@ -1,4 +1,5 @@
 
+from bolib import Parameter
 from bolib.Dimension import DiscreteDimension, NumericDimension
 from bolib.Bo import Bo
 from bolib.ComputeSpace import ComputeList, ComputeSpace
@@ -15,14 +16,29 @@ hairstyle   = DiscreteDimension(elements=["curly", "straight"] ,name = "hairstyl
 skintone    = DiscreteDimension(elements=["white", "black", "latino", "native american", "asian"] ,name = "skintone")
 bodytype    = DiscreteDimension(elements=["slim", "athletic", "average", "curvy"], name = "body type")    
 
-ranking = [ NumericDimension(min=1, max=10, name="Rating") ]
+RANK_MAX = 5
+RANK_MIN = 1
+
+ranking = [ NumericDimension(min=1, max=5, name="Rating") ]
 dimensions = [gender, age, height, haircolor, hairstyle, skintone, bodytype]
 compSpace = ComputeSpace(x = dimensions, y = ranking)
 
 optimizer = Bo(compSpace)
 
 
+def get_rating(l: ParamList):
+    p0 = 1 if l[0].value == "male" else 0
+    p1 = abs(l[1].value - 36) / 70
+    p2 = abs(l[2].value - 176) / 190
+    p3 = 1 if l[3].value == "black" else 0
+    p4 = 1 if l[4].value == "straight" else 0
+    p5 = 1 if l[5].value == "average" else 0
 
+    return sum(p1, p2, p3, p4, p5)
+    
+    
+    
+    
 #print(init_middle[0])
 
 
@@ -36,10 +52,10 @@ def main():
     print("After some iterations, the description should fit")
     
     print("")
-    print(f"Please make a single rating on a scale from 1 to 10, how well the description fits you")
+    print(f"Please make a single rating on a scale from {RANK_MIN} to {RANK_MAX}, how well the description fits you")
     print("")
-    print(f"1 = fits not at all")
-    print(f"10 = fits very well")
+    print(f"{RANK_MIN} = fits not at all")
+    print(f"{RANK_MAX} = fits very well")
     print("")
     input("enter to proceed")
 
@@ -52,7 +68,7 @@ def main():
         
         feedback = 0
         try:
-            feedback = float(input("Enter rating [1 = fits not at all, 10 = fits very well]: "))        
+            feedback = float(input(f"Enter rating [{RANK_MIN} = fits not at all, {RANK_MAX} = fits very well]: "))        
         except:
             break
 
@@ -60,7 +76,7 @@ def main():
         
         normalized_guess = optimizer.infer()        
         
-        if feedback == 10:
+        if feedback == RANK_MAX:
             print(f"Great! I guessed it in {tries} tries!")
             break        
         
