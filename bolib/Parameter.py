@@ -40,7 +40,7 @@ class ParamList(list):
     
     def to_dataframe(self):
         return pd.concat([x.to_dataframe() for x in self], axis=0).reset_index(drop=True)
-    
+
     @property
     def normalized(self):
         return [i.normalized for i in self]
@@ -48,7 +48,10 @@ class ParamList(list):
     def __repr__(self) -> str:
         return self.to_dataframe().to_string(header=self._printheader)
         
-
+    @property
+    def values(self):
+        return [i.value for i in self]
+    
 
 if __name__ == "__main__":
     p0 = Parameter(0, "p0")

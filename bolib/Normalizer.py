@@ -90,7 +90,6 @@ class DiscreteNormalizer(Normalizer):
         
 
     def normalize(self, value) -> Float01:
-        
         v = self._space.index(value) / len(self._elems)
         return Float01(v)
 

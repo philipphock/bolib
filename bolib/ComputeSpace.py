@@ -2,14 +2,21 @@ from typing import List
 
 from bolib.Dimension import Dimension, NumericDimension
 from bolib.Parameter import ParamList
-
+import pandas as pd
 class ComputeList(list):
     def __init__(self, data: List[ParamList] = []):
         super().__init__(data)
-    
-    def __repr__(self) -> str:             
-        return '\n\n'.join(map(str,self))   
 
+    def to_dataframe(self):
+        return pd.concat([x.to_dataframe() for x in self], axis=0).reset_index(drop=True)
+
+    def __repr__(self) -> str:  
+        return str(self.to_dataframe())
+
+    @property
+    def values(self):
+        return [i.values for i in self]
+    
     @property
     def normalized(self):
         return [i.normalized for i in self]      
@@ -28,6 +35,9 @@ class ComputeSpace:
 
 
 
+
+    def add_value(self, xs: List, ys: List, axis = "xy"):
+        self.add_values([xs], [ys])
 
     def add_values(self, xs: List[List], ys: List[List], axis = "xy"):
         if len(xs) != len(ys):
@@ -57,10 +67,11 @@ class ComputeSpace:
         return f"dim: [{self.xdim, self.ydim}]\nx:\n{self.x}\n\n-----\n\ny:\n{self.y}"
             
     def denormalize(self, value):
-        ret = ComputeList()
+        
+        l = ParamList()
         for i in range(self.xdim):
-            ret.append(self._x[i].denorm(value[i]))
-        return ret
+            l.append(self._x[i].denorm(value[i]))
+        return l
 
     @property 
     def normalized(self):
