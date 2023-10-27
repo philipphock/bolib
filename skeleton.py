@@ -8,8 +8,8 @@ from bolib.Parameter import ParamList
 
 
 gender      = DiscreteDimension(elements=["male", "female", "diverse"] ,name = "gender")
-age         = NumericDimension(min=18, max=99, name="age")
-height      = NumericDimension(min=100, max=200, name="height")
+age         = NumericDimension(min=18, max=70, name="age")
+height      = NumericDimension(min=160, max=190, name="height")
 haircolor   = DiscreteDimension(elements=["blonde", "brown", "black", "grey", "red", "blue", "pink", "colorful"] ,name = "haircolor")
 hairstyle   = DiscreteDimension(elements=["curly", "straight"] ,name = "hairstyle")
 skintone    = DiscreteDimension(elements=["white", "black", "latino", "native american", "asian"] ,name = "skintone")
