@@ -37,6 +37,16 @@ class ComputeSpace:
 
 
     def add_value(self, xs: List, ys: List, axis = "xy"):
+        
+        if type(xs) == type(ParamList()):
+            xs = xs.values
+        if type(ys) == type(ParamList()):
+            ys = ys.values
+        if type(xs) ==  type(float()):
+            xs = [xs]
+        if type(ys) ==  type(float()):
+            ys = [ys]   
+
         self.add_values([xs], [ys])
 
     def add_values(self, xs: List[List], ys: List[List], axis = "xy"):

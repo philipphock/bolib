@@ -56,10 +56,7 @@ def main():
         except:
             break
 
-        
-        
-        
-        compSpace.add_value(guess.values, [feedback])
+        compSpace.add_value(guess, feedback)
         
         normalized_guess = optimizer.infer()        
         
