@@ -37,15 +37,21 @@ class ComputeSpace:
 
 
     def add_value(self, xs: List, ys: List, axis = "xy"):
-        
+
         if type(xs) == type(ParamList()):
             xs = xs.values
         if type(ys) == type(ParamList()):
             ys = ys.values
-        if type(xs) ==  type(float()):
+        if isinstance(xs, float):
             xs = [xs]
-        if type(ys) ==  type(float()):
+        if isinstance(ys, float):
             ys = [ys]   
+
+        if isinstance(xs, int):
+            xs = [float(xs)]
+        if isinstance(ys, int):
+            ys = [float(ys)]   
+
 
         self.add_values([xs], [ys])
 
@@ -96,6 +102,10 @@ class ComputeSpace:
     def y(self):
         return self._y_data
 
+    def clear_data(self):
+        self._x_data = ComputeList()
+        self._y_data = ComputeList()
+
 
     def to_computeList(self, l: List[List], dim: List[Dimension], update: ComputeList |None = None):
         if update is not None:
@@ -106,7 +116,7 @@ class ComputeSpace:
         for elem in l: 
             #print("elem", elem)
             plist = ParamList()                             # xs = [[10, 1], [30, 2], [70, 1]]; elem =  [10, 1]
-            for index_attr, attr in enumerate(len(l)):         # _x = [x0, x1]; xattr = x0                
+            for index_attr, attr in enumerate(dim):         # _x = [x0, x1]; xattr = x0                
                 #print("attr", attr)
                 elem_i = elem[index_attr]                   # elem_i = 10
                 #print("elemI", elem_i)
@@ -123,13 +133,14 @@ class ComputeSpace:
 
         
 if __name__ == "__main__":
+    
     x0 = NumericDimension(min=0, max=100, name="p0")
     x1 = NumericDimension(min=0, max=3, name="p1")
     ranking_y = NumericDimension(min=0, max=10, name="Ranking")
 
-    compSpace = ComputeSpace([x0, x1], [ranking_y])
+    compSpace = ComputeSpace([x0], [ranking_y])
 
-    compSpace.add_values(xs = [[100, 2], [10, 1]], ys=[[10],[0]])
+    compSpace.add_value(0,0)
     print(compSpace)
     print(compSpace.normalized)
     
