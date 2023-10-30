@@ -31,7 +31,7 @@ class IdentityNormalizer(Normalizer):
         
     def normalize(self, value: any) -> Float01:
         if self._opt == OptimizeFor.MIN:
-            return 1-value
+            return Float01(1-value)
         return value
     
     def denormalize(self, value: Float01) -> any:
@@ -55,7 +55,7 @@ class NumericNormalizer(Normalizer):
 
     def normalize(self, value: float) -> Float01:
         if self._min == self._max == 0:
-            return value
+            return Float01(value)
        
         n = 0
         if self._max == self._min:

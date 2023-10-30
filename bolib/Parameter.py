@@ -15,6 +15,15 @@ class Parameter:
         df = self.to_dataframe().to_string()
         return df
 
+    
+    def normalized_distance(self, target_param) -> Float01:
+        """
+        Calculates the distnace from a target and normalizes it
+        """
+        d = Float01.get_max_dist(target_param.normalized)[1]
+
+        return abs(self._normalized - target_param.normalized) / d
+
     def to_dataframe(self):
         data = [[self._name, self._value, self._normalizer._space, self._normalized]]
         columns = ['name', 'value', 'space', 'normalized']

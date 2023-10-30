@@ -28,15 +28,17 @@ optimizer = Bo(compSpace)
 
 def get_rating(l: ParamList):
     p0 = 1 if l[0].value == "male" else 0
-    p1 = abs(l[1].value - 36) / 70
-    p2 = abs(l[2].value - 176) / 190
+    
+    p1 = 1-(abs(l[1].value-36))/l[1]._normalizer._max
+    p2 = 1-(abs(l[2].value-176))/l[2]._normalizer._max
+    
     p3 = 1 if l[3].value == "black" else 0
     p4 = 1 if l[4].value == "straight" else 0
-    p5 = 1 if l[5].value == "average" else 0
-
-    return sum(p1, p2, p3, p4, p5)
+    p5 = 1 if l[5].value == "white" else 0
+    p6 = 1 if l[6].value == "average" else 0
     
-    
+    ret = [p0, p1, p2, p3, p4, p5, p6]
+    return (sum(ret)/len(ret))*10
     
     
 #print(init_middle[0])

@@ -97,19 +97,26 @@ class ComputeSpace:
         return self._y_data
 
 
+    def to_computeList(self, l: List[List], dim: List[Dimension], update: ComputeList |None = None):
+        if update is not None:
+            ret = update
+        else:
+            ret = ComputeList()
 
-    def _newdim(self, l: List[List], p: List[ParamList], dim: List[Dimension]):
         for elem in l: 
             #print("elem", elem)
             plist = ParamList()                             # xs = [[10, 1], [30, 2], [70, 1]]; elem =  [10, 1]
-            for index_attr, attr in enumerate(dim):         # _x = [x0, x1]; xattr = x0                
+            for index_attr, attr in enumerate(len(l)):         # _x = [x0, x1]; xattr = x0                
                 #print("attr", attr)
                 elem_i = elem[index_attr]                   # elem_i = 10
                 #print("elemI", elem_i)
                 newdim = attr.new(elem_i)
                 plist.append(newdim)
-            p.append(plist)
-                
+            ret.append(plist)
+        return ret
+
+    def _newdim(self, l: List[List], p: ComputeList, dim: List[Dimension]):
+        self.to_computeList(l, dim, p)
                 
             
         
