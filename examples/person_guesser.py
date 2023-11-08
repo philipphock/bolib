@@ -1,12 +1,15 @@
 
+import sys
+import os
+root_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.append(root_path)
+
 from bolib import Parameter
 from bolib.Dimension import DiscreteDimension, NumericDimension
 from bolib.Bo import Bo
 from bolib.ComputeSpace import ComputeList, ComputeSpace
-import random
-
 from bolib.Parameter import ParamList
-
+import random
 
 gender      = DiscreteDimension(elements=["male", "female", "diverse"] ,name = "gender")
 age         = NumericDimension(min=18, max=70, name="age")
@@ -40,8 +43,6 @@ def get_rating(l: ParamList):
     ret = [p0, p1, p2, p3, p4, p5, p6]
     return (sum(ret)/len(ret))*10
     
-    
-#print(init_middle[0])
 
 
 def main():
